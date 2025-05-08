@@ -1,0 +1,240 @@
+{
+  "active": false,
+  "connections": {
+    "variables": {
+      "main": [
+        [
+          {
+            "node": "Accedo al Sitemap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accedo al Sitemap": {
+      "main": [
+        [
+          {
+            "node": "Convierto a XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convierto a XML": {
+      "main": [
+        [
+          {
+            "node": "Extraigo lo que necesito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraigo lo que necesito": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-27T16:47:58.583Z",
+  "id": "6z4qZKgmA1oGuMEH",
+  "meta": null,
+  "name": "[UDIA] Extracción de datos entre nodos",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -140
+      ],
+      "id": "c3a29b13-a3e1-4bc0-b9d1-52bc6e3dcbe4",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "639636c5-3b6d-4f96-b964-7e37ad2d896e",
+              "name": "sitemap",
+              "value": "https://mascotalandia.es/sitemap-products-1-es.xml",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        380,
+        -140
+      ],
+      "id": "19447577-c37d-428f-b8cd-f7beb9b4a0d1",
+      "name": "variables"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.sitemap }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        -140
+      ],
+      "id": "db504ff7-653d-431e-a857-4b835da6e4f2",
+      "name": "Accedo al Sitemap"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        680,
+        -140
+      ],
+      "id": "5a857a2e-be09-45b1-8ed7-1a882bf2ba2a",
+      "name": "Convierto a XML"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "urlset.url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        840,
+        -140
+      ],
+      "id": "6bfa4fa1-e8c5-4e94-b3d1-463bf525be4c",
+      "name": "Extraigo lo que necesito"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "iEoO7lgHoGl3CZsB",
+          "mode": "list",
+          "cachedResultName": "[VA360] SUBWF 1 - Scraper + Monitoring"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1420,
+        -40
+      ],
+      "id": "0f62815e-55c6-4de9-a746-6e87484667c5",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        -140
+      ],
+      "id": "35dc25eb-5e4a-42df-8bc6-52d12c59e31f",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1220,
+        -140
+      ],
+      "id": "dd1439a1-60ae-4142-a876-97f049f01397",
+      "name": "Loop Over Items"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-04-27T16:51:14.000Z",
+  "versionId": "d8458432-af19-4b86-bec9-d6a690a8c135"
+}
