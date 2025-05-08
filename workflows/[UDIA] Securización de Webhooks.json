@@ -1,0 +1,44 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-05-01T18:13:18.066Z",
+  "id": "Vldr9nRvDitxdCa8",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[UDIA] Securización de Webhooks",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Udiasecurity",
+        "authentication": "jwtAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "79d50a77-22bd-4bd8-b255-448220690f16",
+      "name": "Webhook",
+      "webhookId": "7e5380ec-c34e-44d6-8649-040edc04b1c5",
+      "credentials": {
+        "jwtAuth": {
+          "id": "YgghXmLcHa0SpFUd",
+          "name": "JWT Auth account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-01T18:39:30.000Z",
+  "versionId": "c3ebb3bf-e787-4b7f-84b3-eebece36bb17"
+}
