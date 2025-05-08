@@ -1,0 +1,68 @@
+{
+  "active": false,
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-29T19:13:10.180Z",
+  "id": "32GeaWYePjifBfyP",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[UDIA] Error de Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "=2104798385",
+        "text": "=Error: {{ $json.execution.error.message }} \nÚltimo nodo ejecutado: {{ $json.execution.lastNodeExecuted }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        60,
+        0
+      ],
+      "id": "0a2c239c-48be-42d2-8419-f7261b2b5019",
+      "name": "Telegram",
+      "webhookId": "7797cad6-9678-42c4-a873-ced82ca082d1",
+      "credentials": {
+        "telegramApi": {
+          "id": "nrVkJwO8bDlEbiJN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        0
+      ],
+      "id": "a7b71ba8-8521-4802-bcd4-ecf61fcb35c4",
+      "name": "Error Trigger"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-07T18:44:26.000Z",
+  "versionId": "f20e696f-3c0f-4cf8-b304-6c44a9cd5524"
+}
