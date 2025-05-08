@@ -1,0 +1,296 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "MySQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Assign file to VS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-03T13:26:37.459Z",
+  "id": "ZZ5F7V1dPudKeG9m",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[UDIA] Entrenar asistente de OpenAI",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "74caccfb-a4b0-4792-8b04-33950c22133e",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM libros",
+        "options": {}
+      },
+      "id": "9ac9ebf8-ef8a-4a44-b2c3-1b86e8262702",
+      "name": "MySQL",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        180,
+        0
+      ],
+      "credentials": {
+        "mySql": {
+          "id": "SZJthtuS1EjtQobN",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtiene los datos del nodo anterior (el JSON que has proporcionado)\nconst items = $input.all();\n\n// Inicializa un array vacío para almacenar las líneas del archivo\nlet lines = [];\n\n// Recorre cada objeto del array y forma una línea con la información necesaria\nitems.forEach(item => {\n  const line = `Nombre: ${item.json.nombre} - Editorial: ${item.json.editorial} - Resumen: ${item.json.resumen} - Precio: ${item.json.precio}€ Stock: ${item.json.stock}`;\n  lines.push(line);\n});\n\n// Une todas las líneas con saltos de línea y crea el contenido del archivo\nconst fileContent = lines.join('\\n');\n\n// Convierte el contenido en un buffer binario\nconst buffer = Buffer.from(fileContent, 'utf-8');\n\n// Genera el timestamp Unix\nconst timestamp = Math.floor(Date.now() / 1000);\n\n// Devuelve el archivo como binario con el nombre libros_{timestamp_unix}.txt\nreturn {\n  binary: {\n    data: {\n      fileName: `libros_${timestamp}.txt`,\n      mimeType: 'text/plain',\n      data: buffer.toString('base64')\n    }\n  }\n};\n"
+      },
+      "id": "f07d546e-d304-4e4a-b9d9-6eb0ef2e99be",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "binary.data.data",
+        "options": {
+          "fileName": "={{ $json.binary.data.fileName }}"
+        }
+      },
+      "id": "195a9a95-887d-4cd5-9d1d-07b630f9d858",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "c98fbf8f-b234-4157-b544-b83490f92822",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        440
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "1e0d492a-f79b-4f4c-b84e-c56c0aeb3016",
+      "name": "Calculator",
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        220,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "binaryPropertyName": "=data",
+        "options": {
+          "purpose": "assistants"
+        }
+      },
+      "id": "26f2c61f-bf3b-48d9-8bae-6a3c1d10f9e2",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.5,
+      "position": [
+        660,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "Z3Y1BhnJLBStJAIa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": " https://api.openai.com/v1/vector_stores/vs_681616f4c1508191a5f274ff4180a5ef/files",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer <TUAPIKEY>"
+            },
+            {
+              "name": "OpenAI-Beta",
+              "value": "assistants=v2"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "aa742c71-56a8-4b8e-ba48-7501f99e497e",
+      "name": "Assign file to VS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_Jub0kPqwMwbrIhfQAFxxeYRb",
+          "mode": "list",
+          "cachedResultName": "udia_libros"
+        },
+        "options": {}
+      },
+      "id": "6f76eb0b-0499-460a-9469-18a180cd61e4",
+      "name": "OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.5,
+      "position": [
+        160,
+        240
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "Z3Y1BhnJLBStJAIa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hola, ¿qué libro te interesa hoy?\n",
+        "options": {}
+      },
+      "id": "c255f2f7-ec3e-4155-9228-8f88ee77ed39",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -20,
+        240
+      ],
+      "webhookId": "4f2c335a-6c4a-446d-b5e5-bb3f82ca89f0"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-08T17:38:50.000Z",
+  "versionId": "d913b58b-bbf2-4533-a78d-ea8ed1f10a96"
+}
