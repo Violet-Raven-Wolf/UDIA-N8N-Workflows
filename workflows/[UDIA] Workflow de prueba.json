@@ -1,0 +1,37 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-04-08T18:21:12.223Z",
+  "id": "YUCgifI0b0eXT9XV",
+  "meta": null,
+  "name": "[UDIA] Workflow de prueba",
+  "nodes": [],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2025-04-08T18:22:19.322Z",
+      "updatedAt": "2025-04-08T18:22:19.322Z",
+      "id": "ML0WYmO6moM4406c",
+      "name": "👁️‍🗨️Desarrollo"
+    },
+    {
+      "createdAt": "2025-04-08T18:23:26.333Z",
+      "updatedAt": "2025-04-08T18:23:26.333Z",
+      "id": "xIYHXHFEqToned4X",
+      "name": "📍UDIA"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-04-08T18:37:46.000Z",
+  "versionId": "993f4528-dab4-46f0-b919-32daf3c828a3"
+}
