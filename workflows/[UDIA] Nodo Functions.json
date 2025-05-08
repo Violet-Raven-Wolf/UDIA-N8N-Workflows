@@ -1,0 +1,100 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-27T18:16:09.910Z",
+  "id": "ZJGlYEPjku8pn0Bv",
+  "meta": null,
+  "name": "[UDIA] Nodo Functions",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "8c1476aa-12bc-4d08-86ab-89c72adafe9f",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.techradar.com/rss",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "id": "2d1a8c27-4abb-405e-ad15-8931c78bdb56",
+      "name": "RSS Read",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n\nreturn items.map(item => {\n  \n  const newItem = { ...item.json };\n\n\n  if (newItem.enclosure && newItem.enclosure.url) {\n    newItem.image = newItem.enclosure.url;\n  }\n\n    return { json: newItem };\n});"
+      },
+      "id": "911a0731-80ed-4371-88da-a470badf0678",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nreturn items.map(item => {\n  const newItem = { ...item.json };\n  if (newItem.title && newItem.title.includes(\"Google\")) {\n    newItem.title = `UDIA: ${newItem.title}`;\n  }\n  return { json: newItem };\n});\n"
+      },
+      "id": "2406b05e-5294-40ba-8946-98291fb7dd6a",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        180
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-04-27T20:34:43.000Z",
+  "versionId": "bef671fc-c994-4fd5-a848-a792d091046a"
+}
